@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define MAX_SIZE 100
+
+void CalcInverseArray(int isFloat, double *arr, int n, double min, double max)
+{
+	for (int i = 0; i < n; i++)
+	{
+		double RanValue = min + (double)rand() / RAND_MAX * (max - min);
+		if (!isFloat)
+		{
+			RanValue = (int)RanValue; // 정수로 변환
+		}
+		*(arr + i) = RanValue;
+	}
+}
+
+void printArray(double *arr, int n, const char *state)
+{
+	printf("%s: ", state);// 상태 메세지 출력
+	for (int i = 0; i < n; i++)
+	{
+		printf("%.2f", *(arr + i));
+	}
+	printf("\n");
+}
+void printArrReverse(double *arr, int n)
+{
+	double reverseArr[MAX_SIZE];
+	for (int i = 0; i < n; i++)
+	{
+		*(reverseArr + i) = *(arr + n - 1 - i);
+	}
+	printArray(reverseArr, n, "역순 계산 완료");
+}
+// main function
+int main(void)
+{
+	const int n = 10; // 배열 크기를 10으로 고정
+	double arr[n];
+	double min = -100.0, max = 100.0;
+
+	srand(time(NULL)); // 랜덤 시드 설정
+
+	int choice;
+	printf("1. 정수 배열 생성\n2. 실수 배열 생성\n선택하세요: ");
+	scanf_s("%d", &choice);
+
+	if (choice == 1)
+	{
+		printf("\n정수 배열을 생성합니다...\n");
+		CalcInverseArray(0, arr, n, min, max);
+	}
+	else if (choice == 2)
+	{
+		printf("\n실수 배열을 생성합니다...\n");
+		CalcInverseArray(1, arr, n, min, max);
+	}
+	else
+	{
+		printf("잘못된 선택입니다.\n");
+		return 1;
+	}
+
+	printArray(arr, n, "랜덤 생성 상태");
+	printArrReverse(arr, n);
+
+	return 0;
+}
