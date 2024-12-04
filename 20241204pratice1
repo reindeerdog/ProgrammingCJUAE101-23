@@ -1,0 +1,99 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void GenRanArray(int isFloat, double *arr, int n, double min, double max)
+{
+	for (int i = 0; i < n - 1; i++)
+	{
+		double RanValue = min + (double)rand() / RAND_MAX * (max - min);
+		if (!isFloat)
+		{
+			RanValue = (int)RanValue; // 정수로 변환
+		}
+		*(arr + 1) = RanValue;
+	}
+}
+
+void CalcSortArray(double *arr, int n, int ascending)
+{
+	for (int i = 0; i < n - 1; i++)
+	{
+		for (int j = 0; j < n - i - 1; j++)
+		{
+			if ((ascending && *(arr + j) > *(arr + j +1)) || (!ascending && *(arr + j) < *(arr + j +1)))
+			{
+				double temp = *(arr + j);
+				*(arr + j) = *(arr + j + 1);
+				*(arr + j + 1) = temp;
+			}
+		}
+	}
+}
+
+void printArray(double *arr, int n)
+{
+	for (int i = 0; i < n - 1; i++)
+	{
+		printf("%.2f", *(arr + i));
+	}
+	printf("\n");
+}
+
+//main function
+int main(void)
+{
+	const int n = 10; // 배열 크기를 10으로 고정
+	double arr[n];
+	double min = -100.0, max = 100.0;
+
+	srand(time(NULL)); // 랜덤 시드 설정
+
+	// 정수, 실수 배열 생성 및 출력
+	int choice;
+	printf("1. 정수 배열 생성\n2. 실수 배열 생성\n선택하세요: ");
+	scanf_s("%d", &choice);
+
+	if (choice == 1)
+	{
+		printf("\n정수 배열을 생성합니다...\n");
+		GenRanArray(0, arr, n, min, max);
+	}
+	else if (choice == 2)
+	{
+		printf("\n실수 배열을 생성합니다...\n");
+		GenRanArray(1, arr, n, min, max);
+	}
+	else
+	{
+		printf("잘못된 선택입니다.\n");
+		return 1;
+	}
+
+	printf("\n생성된 배열: ");
+	printArray(arr, n);
+
+	int sortChoice;
+	printf("\n1. 오름차순 정렬\n2. 내림차순 정렬\n선택하세요: ");
+	scanf_s("%d", &sortChoice);
+
+	if (sortChoice == 1)
+	{
+		CalcSortArray(arr, n, 1); // 오름차순
+		printf("\n오름차순 정렬 결과: ");
+	}
+	else if (sortChoice == 2)
+	{
+		CalcSortArray(arr, n, 0); // 내림차순
+		printf("\n내림차순 정렬 결과: ");
+	}
+	else
+	{
+		printf("잘못된 선택입니다.\n");
+		return 1;
+	}
+
+	printArray(arr, n);
+
+	return 0;
+}
