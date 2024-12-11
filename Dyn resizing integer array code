@@ -1,0 +1,110 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+// 총합 계산 함수
+double calculateSum(int* arr, int size) 
+{
+    double sum = 0;
+    for (int i = 0; i < size; i++) 
+    {
+        sum += arr[i];
+    }
+    return sum;
+}
+
+// 평균 계산 함수
+double calculateMean(int* arr, int size) 
+{
+    double sum = calculateSum(arr, size);
+    return sum / size;
+}
+
+// 분산 계산 함수
+double calculateVariance(int* arr, int size, double mean) 
+{
+    double variance = 0;
+    for (int i = 0; i < size; i++) 
+    {
+        variance += pow(arr[i] - mean, 2);
+    }
+    return variance / size;
+}
+
+// 표준편차 계산 함수
+double calculateStdDev(double variance) 
+{
+    return sqrt(variance);
+}
+
+int main(void) 
+{
+    int size;
+
+    // 첫 번째 배열 크기 입력
+    printf("초기 배열 크기: ");
+    scanf_s("%d", &size);
+
+    // 동적 메모리 할당
+    int* arr = (int*)malloc(size * sizeof(int));
+    if (arr == NULL) 
+    {
+        printf("메모리 할당 실패!\n");
+        return 1;
+    }
+
+    // 배열 값 입력 받기
+    printf("입력된 값: ");
+    for (int i = 0; i < size; i++) 
+    {
+        scanf_s("%d", &arr[i]);
+    }
+
+    // 총합, 평균, 분산, 표준편차 계산
+    double mean = calculateMean(arr, size);
+    double variance = calculateVariance(arr, size, mean);
+    double stdDev = calculateStdDev(variance);
+
+    // 결과 출력
+    printf("\n합계: %.2f\n", calculateSum(arr, size));
+    printf("평균: %.2f\n", mean);
+    printf("분산: %.2f\n", variance);
+    printf("표준편차: %.2f\n", stdDev);
+
+    // 추가 배열 크기 입력
+    int addSize;
+    printf("\n추가 배열 크기: ");
+    scanf_s("%d", &addSize);
+
+    // 배열 크기 확장 (realloc 사용)
+    arr = (int*)realloc(arr, (size + addSize) * sizeof(int));
+    if (arr == NULL) 
+    {
+        printf("메모리 재할당 실패!\n");
+        return 1;
+    }
+
+    // 추가된 값 입력 받기
+    printf("주가된 값: ");
+    for (int i = size; i < size + addSize; i++) 
+    {
+        scanf_s("%d", &arr[i]);
+    }
+
+    // 총합, 평균, 분산, 표준편차 재계산
+    int newSize = size + addSize;
+    mean = calculateMean(arr, newSize);
+    variance = calculateVariance(arr, newSize, mean);
+    stdDev = calculateStdDev(variance);
+
+    // 결과 출력
+    printf("\n새로운 합계: %.2f\n", calculateSum(arr, newSize));
+    printf("새로운 평균: %.2f\n", mean);
+    printf("새로운 분산: %.2f\n", variance);
+    printf("새로운 표준편차: %.2f\n", stdDev);
+
+    // 동적 메모리 해제
+    free(arr);
+
+    return 0;
+}
