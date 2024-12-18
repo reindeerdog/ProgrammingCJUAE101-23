@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <math.h>
+
+// 3차원 점 구조체 정의
+typedef struct 
+{
+    double coords[3]; // 배열로 좌표 저장
+} Point3D;
+
+// 거리 계산 함수
+double calculateDistance(Point3D* p1, Point3D* p2) 
+{
+    return sqrt(pow(p2->coords[0] - p1->coords[0], 2) +
+        pow(p2->coords[1] - p1->coords[1], 2) +
+        pow(p2->coords[2] - p1->coords[2], 2));
+}
+
+int main(void) 
+{
+    Point3D point1, point2;
+
+    // 첫 번째 점 입력
+    printf("첫 번째 점의 좌표 (x, y, z)를 입력하세요: ");
+    for (int i = 0; i < 3; i++) 
+    {
+        scanf_s("%lf", &point1.coords[i]);
+    }
+
+    // 두 번째 점 입력
+    printf("두 번째 점의 좌표 (x, y, z)를 입력하세요: ");
+    for (int i = 0; i < 3; i++) 
+    {
+        scanf_s("%lf", &point2.coords[i]);
+    }
+
+    // 거리 계산
+    double distance = calculateDistance(&point1, &point2);
+
+    // 결과 출력
+    printf("두 점 사이의 거리: %.2lf\n", distance);
+
+    return 0;
+}
